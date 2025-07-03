@@ -15,6 +15,8 @@ namespace Artistas.Models
         public int? UsuarioId { get; set; }
         public Usuario Usuario { get; set; }
 
+        public List<Espectaculo>? Espectaculos { get; set; } = new List<Espectaculo>();
+
         public Artista() { }
         public Artista(string nombre, string genero, DateOnly fechaNacimiento, string nacionalidad, int categoriaId, int usuarioId)
         {

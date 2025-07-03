@@ -12,6 +12,7 @@ namespace Artistas.Data
         {
             modelBuilder.Entity<Artista>().ToTable("Artistas");
             modelBuilder.Entity<Categoria>().ToTable("Categorias");
+            modelBuilder.Entity<Espectaculo>().ToTable("Espectaculos");
 
             modelBuilder.Entity<Categoria>()
                 .HasMany(categoria => categoria.Artistas)
@@ -46,10 +47,19 @@ namespace Artistas.Data
             modelBuilder.Entity<Usuario>()
                 .HasIndex(usuario => usuario.Email)
                 .IsUnique();
-       }
+
+
+            modelBuilder.Entity<Espectaculo>()
+                .HasOne(e => e.Artista)
+                .WithMany(a => a.Espectaculos)
+                .HasForeignKey(e => e.ArtistaId);
+
+        }
 
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Artista> Artistas { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Espectaculo> Espectaculos { get; set; }
+
     }
 }

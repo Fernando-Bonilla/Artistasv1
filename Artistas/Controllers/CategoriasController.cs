@@ -147,6 +147,32 @@ namespace Artistas.Controllers
 
         }
 
+        [HttpDelete("{id}")]
+        public ActionResult<bool> DeleteCategorias(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Necesita ingresar un id");
+            }
+
+            Categoria? categoria = _context.Categorias.FirstOrDefault(e => e.Id == id);
+            if (categoria == null)
+            {
+                return NotFound($"No existe Espectaculo con id: {id}");
+            }
+
+            try
+            {
+                _context.Categorias.Remove(categoria);
+                _context.SaveChanges();
+
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
     }

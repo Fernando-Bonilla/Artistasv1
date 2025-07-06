@@ -27,9 +27,28 @@ namespace Artistas.Controllers
 
         // GET: api/Artistas
         [HttpGet]
-        public ActionResult<List<Artista>> GetArtistas()
+        public ActionResult<List<RespuestaArtistaDTO>> GetArtistas()
         {
-            return _context.Artistas.ToList();
+            List<Artista> artistas = _context.Artistas.ToList();
+
+            List<RespuestaArtistaDTO> artistasRespuesta = new List<RespuestaArtistaDTO>();
+
+            foreach (Artista artista in artistas)
+            {
+                RespuestaArtistaDTO artistaResp = new RespuestaArtistaDTO();
+                artistaResp.Id = artista.Id;
+                artistaResp.Nombre = artista.Nombre ?? "";
+                artistaResp.Genero = artista.Genero ?? "";
+                artistaResp.FechaNacimiento = artista.FechaNacimiento.ToString("dd/MM/yyyy");
+                artistaResp.Nacionalidad = artista.Nacionalidad ?? "";
+                artistaResp.CategoriaNombre = artista.Categoria?.Nombre ?? "";
+                artistaResp.UsuarioEmail = artista.Usuario?.Email ?? "";
+
+                artistasRespuesta.Add(artistaResp);
+            }
+
+            return artistasRespuesta;
+
         }
 
         // GET: api/Artistas/5

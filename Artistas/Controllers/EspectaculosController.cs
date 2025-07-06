@@ -131,7 +131,9 @@ namespace Artistas.Controllers
                 return BadRequest("El body del request estaba vacio");
             }
 
-            Espectaculo? espectaculo = _context.Espectaculos.FirstOrDefault(e => e.Id == id);
+            Espectaculo? espectaculo = _context.Espectaculos
+                .Include(e => e.Artista)
+                .FirstOrDefault(e => e.Id == id);
             if (espectaculo == null)
             {
                 return NotFound($"No existe espectaculo con id: {id}");
@@ -164,6 +166,33 @@ namespace Artistas.Controllers
                 return Ok(espectaculoResp);
             }
             catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult<bool> DeleteEspectaculo(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("Necesita ingresar un id");
+            }
+
+            Espectaculo? espectaculo = _context.Espectaculos.FirstOrDefault(e => e.Id == id);
+            if (espectaculo == null)
+            {
+                return NotFound($"No existe Espectaculo con id: {id}");
+            }
+
+            try
+            {
+                _context.Espectaculos.Remove(espectaculo);
+                _context.SaveChanges();
+
+                return Ok(true);
+            }
+            catch (Exception ex) 
             {
                 return BadRequest(ex.Message);
             }

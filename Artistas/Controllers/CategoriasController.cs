@@ -155,10 +155,18 @@ namespace Artistas.Controllers
                 return BadRequest("Necesita ingresar un id");
             }
 
-            Categoria? categoria = _context.Categorias.FirstOrDefault(e => e.Id == id);
+            Categoria? categoria = _context.Categorias
+                .Include(c => c.Artistas)
+                .FirstOrDefault(e => e.Id == id);
+
             if (categoria == null)
             {
                 return NotFound($"No existe Espectaculo con id: {id}");
+            }
+
+            if(categoria.Artistas.Any())
+            {
+                return BadRequest("No se puede eliminar la categoria porque tiene artistas asociados");
             }
 
             try

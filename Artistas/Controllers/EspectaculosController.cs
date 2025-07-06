@@ -25,9 +25,28 @@ namespace Artistas.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Espectaculo>> GetEspectaculos()
+        public ActionResult<List<RespuestaEspectaculoDTO>> GetEspectaculos()
         {
-            return _context.Espectaculos.ToList();
+            List<Espectaculo> espectaculos = _context.Espectaculos
+                .Include(e => e.Artista)
+                .ToList();
+
+            List<RespuestaEspectaculoDTO> espectaculosRespuesta = new List<RespuestaEspectaculoDTO>();
+
+            foreach(Espectaculo espectaculo in espectaculos)
+            {
+                RespuestaEspectaculoDTO espectaculoResp = new RespuestaEspectaculoDTO();
+                espectaculoResp.Id = espectaculo.Id;
+                espectaculoResp.Titulo = espectaculo.Titulo ?? "";
+                espectaculoResp.Fecha = espectaculo.Fecha;
+                espectaculoResp.Horario = espectaculo.Horario;
+                espectaculoResp.ArtistaId = espectaculo.ArtistaId ?? 0;
+                espectaculoResp.NombreArtista = espectaculo.Artista?.Nombre ?? "";
+
+                espectaculosRespuesta.Add(espectaculoResp);
+            }
+
+            return espectaculosRespuesta;
         }
 
         [HttpGet("{id}")]

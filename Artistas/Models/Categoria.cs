@@ -9,5 +9,13 @@ namespace Artistas.Models
         public string? Nombre { get; set; }
         public string? Descripcion { get; set; }
         public List<Artista>? Artistas { get; set; } = new List<Artista>();
+
+        public Categoria() { }
+
+        public Categoria(string nombre, string descripcion)
+        {
+            Nombre = nombre;
+            Descripcion = descripcion;
+        }
     }
 }

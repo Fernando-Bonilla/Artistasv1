@@ -148,8 +148,8 @@ namespace Artistas.Controllers
 
             Artista? artistaPorNombre = _context.Artistas.FirstOrDefault(artista => artista.Nombre == parametrosArtista.Nombre);
 
-            if (artistaPorNombre != null)
-                return BadRequest("Ya existe un Artista con ese nombre");
+            /*if (artistaPorNombre != null)
+                return BadRequest("Ya existe un Artista con ese nombre");*/
 
             artista.Nombre = parametrosArtista.Nombre;
             artista.Genero = parametrosArtista.Genero;
